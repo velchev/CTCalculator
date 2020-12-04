@@ -64,15 +64,13 @@ namespace Calculator.Tests
             Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
         }
 
-        [Theory, AutoData]
-        public void Given_consecutive_delimiters_should_return_format_exception(StringCalculator sut)
+        [Theory]
+        [InlineAutoData("1,\n")]
+        [InlineAutoData("1\n,")]
+        public void Given_consecutive_delimiters_should_return_format_exception(string inputString, StringCalculator sut)
         {
-            string[] inputStrings = { "1,\n", "1\n," };
-            foreach (var inputString in inputStrings)
-            {
-                var exception = Assert.Throws<FormatException>(() => sut.Add(inputString));
-                Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
-            }
+            var exception = Assert.Throws<FormatException>(() => sut.Add(inputString));
+            Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
         }
     }
 }
