@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Calculator
+﻿namespace Calculator
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -23,19 +22,20 @@ namespace Calculator
                 _numbersDelimiters.Add(char.Parse(singleCharacterDelimiter));
             }
 
-            if (numbers.Any(x=>_numbersDelimiters.Contains(x)))
+            var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());
+
+            if (itemsToParse.Any(x => string.IsNullOrWhiteSpace(x)))
             {
-                var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());
-
-                if (itemsToParse.Any(x => string.IsNullOrWhiteSpace(x)))
-                {
-                    throw new FormatException("Two consecutive delimiters are not allowed.");
-                }
-
-                return numbers.Split(_numbersDelimiters.ToArray()).Select(x => int.Parse(x)).Sum();
+                throw new FormatException("Two consecutive delimiters are not allowed.");
+            }
+            
+            var arguments = itemsToParse.Select(x => int.Parse(x.Trim())).ToArray();
+            if (arguments.Any(x => x < 0))
+            {
+                throw new ArgumentOutOfRangeException($"Negatives not allowed ({string.Join(",", arguments.Where(x => x < 0))})");
             }
 
-            return int.Parse(numbers);
+            return numbers.Split(_numbersDelimiters.ToArray()).Select(x => int.Parse(x)).Sum();
 
         }
     }

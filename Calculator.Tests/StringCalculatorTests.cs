@@ -92,5 +92,46 @@ namespace Calculator.Tests
             
             Assert.Equal(integersToTest.Sum(), result);
         }
+
+        [Theory]
+        [InlineAutoData("-2", "-2")]
+        [InlineAutoData("-2,-3", "-2,-3")]
+        public void Given_only_negative_numbers_should_throw_an_exception(string inputString, string negativeInputString,
+            StringCalculator sut)
+        {
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => sut.Add(inputString));
+
+            Assert.Contains("Negatives not allowed", exception.Message);
+            Assert.Contains(negativeInputString, exception.Message);
+        }
+
+        [Theory]
+        [InlineAutoData("-2,3", "-2", "3")]
+        [InlineAutoData("-2,-3,1", "-2,-3", "1")]
+        public void Given_a_negative_number_should_throw_an_exception(string inputString, string negativeInputString, 
+            string positiveInputString,
+            StringCalculator sut)
+        {
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => sut.Add(inputString));
+
+            Assert.Contains("Negatives not allowed", exception.Message);
+            Assert.Contains(negativeInputString, exception.Message);
+            Assert.DoesNotContain(positiveInputString, exception.Message);
+        }
+
+        [Theory, AutoData]
+        public void Given_a_negative_numbers_should_throw_an_exception(StringCalculator sut, int multipleNumbers, Generator<int> intGenerator)
+        {
+            var integersToTest = intGenerator.Take(multipleNumbers).ToList();
+            var negativeInputString = string.Join(",", integersToTest.Take(multipleNumbers).ToList().Select(x => -1 * x));
+            var positiveInputString = string.Join(",", integersToTest.Skip(multipleNumbers / 2));
+            var inputString = $"{negativeInputString},{positiveInputString}";
+
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => sut.Add(inputString));
+
+            Assert.Contains("Negatives not allowed", exception.Message);
+            Assert.Contains(negativeInputString, exception.Message);
+            Assert.DoesNotContain(positiveInputString, exception.Message);
+        }
     }
 }
