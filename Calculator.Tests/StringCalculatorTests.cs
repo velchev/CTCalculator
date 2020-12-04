@@ -59,9 +59,9 @@ namespace Calculator.Tests
         [Theory, AutoData]
         public void Given_new_line_as_a_delimiter_after_comma_should_return_format_exception(StringCalculator sut)
         {
-            string inputString = "1,\n";
+            var inputString = "1,\n";
             var exception = Assert.Throws<FormatException>(() => sut.Add(inputString));
-            Assert.Contains("Two consecutive delimiters are not allowed", exception.Message);
+            Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
         }
     }
 }

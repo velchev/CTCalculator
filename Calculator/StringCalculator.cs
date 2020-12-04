@@ -17,6 +17,13 @@ namespace Calculator
 
             if (numbers.Any(x=>_numbersDelimiters.Contains(x)))
             {
+                var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());
+
+                if (itemsToParse.Any(x => string.IsNullOrWhiteSpace(x)))
+                {
+                    throw new FormatException("Two consecutive delimiters are not allowed.");
+                }
+
                 return numbers.Split(_numbersDelimiters.ToArray()).Select(x => int.Parse(x)).Sum();
             }
 
