@@ -35,7 +35,7 @@
                 throw new ArgumentOutOfRangeException($"Negatives not allowed ({string.Join(",", arguments.Where(x => x < 0))})");
             }
 
-            return numbers.Split(_numbersDelimiters.ToArray()).Select(x => int.Parse(x)).Sum();
+            return arguments.Sum();
 
         }
     }
