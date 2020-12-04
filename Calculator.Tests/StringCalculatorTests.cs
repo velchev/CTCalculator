@@ -45,5 +45,15 @@ namespace Calculator.Tests
 
             Assert.Equal(integersToTest.Sum(), result);
         }
+
+        [Theory, AutoData]
+        public void Given_new_line_as_a_delimiter_should_return_the_sum_of_all_numbers(StringCalculator sut, int multipleNumbers, Generator<int> intGenerator)
+        {
+            var integersToTest = intGenerator.Take(multipleNumbers).ToList();
+            var inputString = $"{integersToTest[0]}\n{string.Join(",", integersToTest.Skip(1).ToList())}";
+            var result = sut.Add(inputString);
+
+            Assert.Equal(integersToTest.Sum(), result);
+        }
     }
 }
