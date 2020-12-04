@@ -61,6 +61,7 @@ namespace Calculator.Tests
         {
             var inputString = "1,\n";
             var exception = Assert.Throws<FormatException>(() => sut.Add(inputString));
+            
             Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
         }
 
@@ -70,7 +71,21 @@ namespace Calculator.Tests
         public void Given_consecutive_delimiters_should_return_format_exception(string inputString, StringCalculator sut)
         {
             var exception = Assert.Throws<FormatException>(() => sut.Add(inputString));
+            
             Assert.Contains("Two consecutive delimiters are not allowed.", exception.Message);
+        }
+
+        [Theory]
+        [InlineAutoData(";")]
+        public void Given_a_custom_delimiter_definition_should_return_the_sum_of_all_number(char customDelimiter, StringCalculator sut,
+            int multipleNumbers, Generator<int> intGenerator)
+        {
+            var integersToTest = intGenerator.Take(multipleNumbers).ToList();
+            var inputString = $"//{customDelimiter}\n{string.Join(customDelimiter, integersToTest)}";
+            
+            var result = sut.Add(inputString);
+            
+            Assert.Equal(integersToTest.Sum(), result);
         }
     }
 }
