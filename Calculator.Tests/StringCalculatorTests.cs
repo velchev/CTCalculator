@@ -35,5 +35,15 @@ namespace Calculator.Tests
 
             Assert.Equal(numbers.Sum(), result);
         }
+
+        [Theory, AutoData]
+        public void Given_unknown_amount_of_numbers_should_return_the_sum_of_all_numbers(StringCalculator sut, int multipleNumbers, Generator<int> intGenerator)
+        {
+            var integersToTest = intGenerator.Take(multipleNumbers).ToList();
+            var inputString = string.Join(",", integersToTest);
+            var result = sut.Add(inputString);
+
+            Assert.Equal(integersToTest.Sum(), result);
+        }
     }
 }
