@@ -17,22 +17,24 @@
 
             if (numbers.StartsWith("//"))
             {
-                int GetFirstDigitIndex()
+                int GetNewLineIndex()
                 {
                     for (var i = 0; i < numbers.Length; i++)
                     {
-                        if (char.IsDigit(numbers[i]))
+                        if (numbers[i]=='\n')
                         {
                             return i;
                         }
                     }
-                    return -1;
+                    throw new ArgumentException("Newline delimiter not found");
                 }
 
-                var firstDigitIndex = GetFirstDigitIndex();
-                var extractDelimiters = numbers.Substring(2, firstDigitIndex - 2).ToCharArray();
-                _numbersDelimiters.AddRange(extractDelimiters);
-                numbers = numbers.Substring(firstDigitIndex);
+                var newLineIndex = GetNewLineIndex();
+                var extractDelimiters = numbers.Substring(2, newLineIndex - 2).ToCharArray();
+                //added new delimiters but making sure they are lowercase
+                _numbersDelimiters.AddRange(extractDelimiters.Select(x=>x.ToString()
+                    .ToLower()).Select(f=>char.Parse(f)));
+                numbers = numbers.Substring(newLineIndex + 1);
             }
 
             var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());

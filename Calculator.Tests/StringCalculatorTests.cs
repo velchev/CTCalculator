@@ -161,12 +161,25 @@ namespace Calculator.Tests
         [InlineAutoData("//*%\n1*2%3", 6)]
         [InlineAutoData("//*%$zx\n1*2%3$1z1x1", 9)]
         [InlineAutoData("//*%$zx\n1*2%3$1z1x1\n1", 10)]
-        [InlineAutoData("//*%1%1", 2)]
         public void Given_many_delimiters_should_return_sum_using_those_delimiters(string inputString, int expectedResult,
             StringCalculator sut)
         {
             var actual = sut.Add(inputString);
             Assert.Equal(expectedResult, actual);
+        }
+
+
+        [Theory]
+        [InlineAutoData("//*%1%1")]
+        [InlineAutoData("//1")]
+        [InlineAutoData("//1,2")]
+        [InlineAutoData("//1,2,3")]
+        public void Given_many_delimiters_but_no_new_line_delimiter_should_throw_an_exception(string inputString,
+            StringCalculator sut)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => sut.Add(inputString));
+
+            Assert.Contains("Newline delimiter not found", exception.Message);
         }
     }
 }
