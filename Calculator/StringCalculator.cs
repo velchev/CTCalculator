@@ -35,7 +35,7 @@
                 throw new ArgumentOutOfRangeException($"Negatives not allowed ({string.Join(",", arguments.Where(x => x < 0))})");
             }
 
-            return arguments.Sum();
+            return arguments.Where(x=>x<=1000).Sum();
 
         }
     }

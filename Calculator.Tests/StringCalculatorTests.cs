@@ -133,5 +133,27 @@ namespace Calculator.Tests
             Assert.Contains(negativeInputString, exception.Message);
             Assert.DoesNotContain(positiveInputString, exception.Message);
         }
+
+
+        [Theory]
+        [InlineAutoData(2, 1001)]
+        [InlineAutoData(1000, 1001)]
+        public void Given_numbers_greater_than_1000_should_return_sum_ignoring_those_numbers(int smallNumber, int bigNumber, StringCalculator sut)
+        {
+            var inputString = $"{string.Join(",", smallNumber, bigNumber)}";
+            var result = sut.Add(inputString);
+            Assert.Equal(smallNumber, result);
+        }
+
+        [Theory]
+        [InlineAutoData("2,1001,1", 3)]
+        [InlineAutoData("1,2,3,4,2000,3000,2001", 10)]
+        [InlineAutoData("1001", 0)]
+        [InlineAutoData("2,1001,13", 15)]
+        public void Given_many_numbers_greater_than_1000_should_return_sum_ignoring_those_numbers(string inputString, int expectedResult, StringCalculator sut)
+        {
+            var result = sut.Add(inputString);
+            Assert.Equal(expectedResult, result);
+        }
     }
 }
