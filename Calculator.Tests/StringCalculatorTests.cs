@@ -77,12 +77,17 @@ namespace Calculator.Tests
 
         [Theory]
         [InlineAutoData(";")]
+        [InlineAutoData("&")]
+        [InlineAutoData("P")]
+        [InlineAutoData("p")]
         public void Given_a_custom_delimiter_definition_should_return_the_sum_of_all_number(char customDelimiter, StringCalculator sut,
             int multipleNumbers, Generator<int> intGenerator)
         {
             var integersToTest = intGenerator.Take(multipleNumbers).ToList();
-            var inputString = $"//{customDelimiter}\n{string.Join(customDelimiter, integersToTest)}";
-            
+            var lowercaseCharacterDelimiter = customDelimiter.ToString().ToLower();
+            var inputString = $"//{lowercaseCharacterDelimiter}\n{string.Join(lowercaseCharacterDelimiter, integersToTest)}";
+
+
             var result = sut.Add(inputString);
             
             Assert.Equal(integersToTest.Sum(), result);

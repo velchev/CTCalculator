@@ -17,7 +17,7 @@ namespace Calculator
 
             if (numbers.StartsWith("//"))
             {
-                var singleCharacterDelimiter = numbers[2].ToString();
+                var singleCharacterDelimiter = numbers[2].ToString().ToLower();
                 numbers = numbers.Substring(4);
 
                 _numbersDelimiters.Add(char.Parse(singleCharacterDelimiter));
