@@ -3,6 +3,8 @@ using Xunit;
 
 namespace Calculator.Tests
 {
+    using System.Linq;
+    using AutoFixture;
     using AutoFixture.Xunit2;
 
     public class StringCalculatorTests
@@ -20,6 +22,18 @@ namespace Calculator.Tests
             var inputString = $"{number}";
             var result = sut.Add(inputString);
             Assert.Equal(number, result);
+        }
+
+
+        [Theory]
+        [AutoData]
+        public void Given_two_numbers_should_return_the_sum_of_both_numbers(StringCalculator sut, Generator<int> generator)
+        {
+            var numbers = generator.Take(2).ToList();
+            var inputString = string.Join(",", numbers);
+            var result = sut.Add(inputString);
+
+            Assert.Equal(numbers.Sum(), result);
         }
     }
 }
