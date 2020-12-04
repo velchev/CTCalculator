@@ -1,11 +1,10 @@
-using System;
-using Xunit;
-
 namespace Calculator.Tests
 {
     using System.Linq;
     using AutoFixture;
     using AutoFixture.Xunit2;
+    using System;
+    using Xunit;
 
     public class StringCalculatorTests
     {

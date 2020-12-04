@@ -51,7 +51,6 @@
             }
 
             return arguments.Where(x=>x<=1000).Sum();
-
         }
     }
 }
