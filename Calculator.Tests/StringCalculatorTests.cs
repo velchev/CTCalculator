@@ -155,5 +155,18 @@ namespace Calculator.Tests
             var result = sut.Add(inputString);
             Assert.Equal(expectedResult, result);
         }
+
+
+        [Theory]
+        [InlineAutoData("//*%\n1*2%3", 6)]
+        [InlineAutoData("//*%$zx\n1*2%3$1z1x1", 9)]
+        [InlineAutoData("//*%$zx\n1*2%3$1z1x1\n1", 10)]
+        [InlineAutoData("//*%1%1", 2)]
+        public void Given_many_delimiters_should_return_sum_using_those_delimiters(string inputString, int expectedResult,
+            StringCalculator sut)
+        {
+            var actual = sut.Add(inputString);
+            Assert.Equal(expectedResult, actual);
+        }
     }
 }

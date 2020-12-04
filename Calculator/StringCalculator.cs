@@ -7,6 +7,7 @@
     public class StringCalculator
     {
         private readonly List<char> _numbersDelimiters = new List<char>() { ',', '\n' };
+
         public int Add(string numbers)
         {
             if (string.IsNullOrWhiteSpace(numbers))
@@ -16,10 +17,22 @@
 
             if (numbers.StartsWith("//"))
             {
-                var singleCharacterDelimiter = numbers[2].ToString().ToLower();
-                numbers = numbers.Substring(4);
+                int GetFirstDigitIndex()
+                {
+                    for (var i = 0; i < numbers.Length; i++)
+                    {
+                        if (char.IsDigit(numbers[i]))
+                        {
+                            return i;
+                        }
+                    }
+                    return -1;
+                }
 
-                _numbersDelimiters.Add(char.Parse(singleCharacterDelimiter));
+                var firstDigitIndex = GetFirstDigitIndex();
+                var extractDelimiters = numbers.Substring(2, firstDigitIndex - 2).ToCharArray();
+                _numbersDelimiters.AddRange(extractDelimiters);
+                numbers = numbers.Substring(firstDigitIndex);
             }
 
             var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());
