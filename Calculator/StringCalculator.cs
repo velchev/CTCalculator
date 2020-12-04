@@ -15,6 +15,14 @@ namespace Calculator
                 return 0;
             }
 
+            if (numbers.StartsWith("//"))
+            {
+                var singleCharacterDelimiter = numbers[2].ToString();
+                numbers = numbers.Substring(4);
+
+                _numbersDelimiters.Add(char.Parse(singleCharacterDelimiter));
+            }
+
             if (numbers.Any(x=>_numbersDelimiters.Contains(x)))
             {
                 var itemsToParse = numbers.Split(_numbersDelimiters.ToArray());
